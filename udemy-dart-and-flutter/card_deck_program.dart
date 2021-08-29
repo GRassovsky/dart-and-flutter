@@ -11,9 +11,13 @@ void main()
   
   deck.removeCard(new Card(Rank.Ace, Suit.Spades));
   
-  deck.shuffleCards();
+  //deck.shuffleCards();
   
-  deck.printDeck();
+  //print(deck.dealCards(5));
+
+  print(deck);
+
+  // print(deck.cardsWithSuit(Suit.Clubs));
 }
 
 
@@ -45,19 +49,13 @@ enum Suit
 
 extension ParseRanks on Rank
 {
-  String toShortString()
-  {
-    return this.toString().split('.').last;
-  }
+  String toShortString() => this.toString().split('.').last;
 }
 
 
 extension ParseSuits on Suit
 {
-  String toShortString()
-  {
-    return this.toString().split('.').last;
-  }
+  String toShortString() => this.toString().split('.').last;
 }
 
 
@@ -72,19 +70,21 @@ class Card
   Rank getRank() => rank;
   Suit getSuit() => suit;
   
-  void printCard() => print("Card is a ${this.rank.toShortString()} of ${this.suit.toShortString()}");
+  toString() => "${rank.toShortString()} of ${suit.toShortString()}";
 }
 
 
 class Deck
 {
-  List<Card> cards = new List.filled(0, null, growable:true);
+
+  List<Card> cards = [];
   
   Deck()
   {
     // Call recreateDeck to 
     recreateDeck();
   }
+  
   
   void recreateDeck()
   {
@@ -100,26 +100,32 @@ class Deck
   }
   
   
-  void printDeck()
-  {
-    cards.forEach( (c) => c.printCard() );
-  }
-
-  void addCard(Card c)
-  {
-    cards.add(c);
-  }
+  toString() => cards.toString();
   
+
   void removeCard(Card c)
   {
-    cards.remove( 
-      cards.firstWhere((_c) => (_c.rank == c.rank && _c.suit == c.suit))
-      );
+    cards.removeWhere( (_c) => (_c.rank == c.rank && _c.suit == c.suit) );
   }
   
-  void shuffleCards()
+
+  void addCard(Card c) => cards.add(c);
+
+
+  void shuffleCards() => cards.shuffle();
+
+
+  cardsWithSuit(Suit suit)
   {
-    cards.shuffle();
+    return cards.where( (c) => c.suit == suit );
+  }
+
+
+  dealCards(int num)
+  {
+    List<Card> hand = cards.sublist(0, num);
+    cards.removeRange(0, num);
+    return hand;
   }
 }
 
