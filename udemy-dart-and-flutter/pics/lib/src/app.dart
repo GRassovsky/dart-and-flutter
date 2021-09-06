@@ -1,5 +1,9 @@
 // Import flutter helper library
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' show get;
+import 'dart:convert';
+import 'models/image_model.dart';
+import 'widgets/image_list.dart';
 
 class App extends StatefulWidget
 {
@@ -14,7 +18,20 @@ class App extends StatefulWidget
 class AppState extends State<App>
 {
   int counter = 0;
+  List<ImageModel> images = [];
   
+  void fetchImage() async
+  {
+    counter++;
+    final response = await get(Uri.parse("https://jsonplaceholder.typicode.com/photos/${counter}"));
+    final imageModel = ImageModel.fromJson(json.decode(response.body));
+    setState(()
+    {
+      images.add(imageModel);
+    });
+    images.forEach((img) => print("Image id: ${img.id}, url: ${img.url}"));
+  }
+
   // _Must_ define a 'build' method that returns
   // the widgets that this widget will show
   Widget build(context)
@@ -24,14 +41,10 @@ class AppState extends State<App>
         appBar: AppBar(
           title: Text("Let's see some images!"),
         ),
-        body: Text('Image count: ${counter}'),
+        body: ImageList(images),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
-          onPressed: () {
-            setState(() {
-              counter++;
-            });
-          },
+          onPressed: fetchImage,
         ),
       ),
     );
