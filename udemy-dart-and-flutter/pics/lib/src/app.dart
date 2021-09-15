@@ -25,11 +25,11 @@ class AppState extends State<App>
     counter++;
     final response = await get(Uri.parse("https://jsonplaceholder.typicode.com/photos/${counter}"));
     final imageModel = ImageModel.fromJson(json.decode(response.body));
+    
     setState(()
     {
       images.add(imageModel);
     });
-    images.forEach((img) => print("Image id: ${img.id}, url: ${img.url}"));
   }
 
   // _Must_ define a 'build' method that returns
@@ -51,11 +51,4 @@ class AppState extends State<App>
   }
 
   
-}
-
-
-
-class AppWidget
-{
-
 }
