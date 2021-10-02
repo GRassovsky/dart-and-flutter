@@ -20,7 +20,7 @@ class LoginScreenState extends State<LoginScreen>
                     children: [
                         emailField(),
                         passwordField(),
-                        //submitButton(),
+                        submitButton(),
                     ],
                 ),
             ),
@@ -53,8 +53,13 @@ class LoginScreenState extends State<LoginScreen>
         );
     }
 
-    // Widget submitButton()
-    // {
-
-    // }
+    Widget submitButton()
+    {
+        final ButtonStyle style = ElevatedButton.styleFrom( primary: Colors.red);
+        return ElevatedButton(
+            style: style,
+            child: Text('Submit!'),
+            onPressed: () { print("Submit button pressed!"); },
+        );
+    }
 }
